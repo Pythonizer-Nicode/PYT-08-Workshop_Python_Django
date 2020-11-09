@@ -10,6 +10,7 @@
 ###  Index
 
 -   [STEP 1 - Starting Project](#step_1_-_starting_project)
+-   [STEP 2 - Creating App](#step_1_-_creating_app)
 
 ---
 
@@ -32,6 +33,14 @@
 -   You should see the Django's rocket 
 -   ```python manage.py createsuperuser```
 -   Fill in the different fields
+
+---
+
+### STEP 2 - Creating App
+
+-   Create app: ```$ python manage.py startapp events```
+-   Open **settings.py**
+-   Add ```'events.apps.EventsConfig',``` within **INSTALLED_APPS** array
 
 ---
 
