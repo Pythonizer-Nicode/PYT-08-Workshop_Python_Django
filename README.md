@@ -10,8 +10,9 @@
 ###  Index
 
 -   [STEP 1 - Starting Project](#step_1_-_starting_project)
--   [STEP 2 - Creating App](#step_1_-_creating_app)
--   [STEP 3 - Models](#step_1_-_models)
+-   [STEP 2 - Creating App](#step_2_-_creating_app)
+-   [STEP 3 - Models](#step_3_-_models)
+-   [STEP 4 - Views](#step_4_-_views)
 
 ---
 
@@ -101,6 +102,126 @@
 -   ```python manage.py makemigrations```
 -   ```python manage.py migrate```
 -   ```python manage.py sqlmigrate events 0002_xxx``` to view automatic SQL request
+
+---
+
+### STEP 4 - Views
+
+-   Add this to your **events views.py** file:    
+
+    from django.shortcuts import render        
+    from django.http import HttpResponse    
+    
+    
+    def index(request):
+        return HttpResponse("<H1>MyClub Event Calendar</h1>")
+-   In your **events** folder create a file called **urls.py**
+-   Add this in **events urls.py**: 
+    from django.urls import path
+    from . import views
+    
+    
+    urlpatterns = [
+        path('', views.index, name='index')
+    ]
+-   Now, in your **workshop** folder open **urls.py** and modify:   
+    from django.contrib import admin
+    from django.urls import include, path
+    
+    
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('/', include('events.urls')),  # Must be last in the list, else Django will always take this path
+    ]
+-   See result at ```http://127.0.0.1:8000/```
+-   Modify this in **events views.py**:
+    from django.shortcuts import render
+    from django.http import HttpResponse
+    from datetime import date
+    
+    
+    def index(request):
+        t = date.today()
+        month = date.strftime(t, '%b')
+        year = t.year
+        title = "MyClub Event Calendar - %s %s" % (month,year)
+        return HttpResponse("<h1>%s</h1>" % title)
+-   See result at ```http://127.0.0.1:8000/```
+-   Modify again **events urls.py**:   
+    from django.urls import path
+    from . import views
+    
+    
+    urlpatterns = [
+        # path('', views.index, name='index')
+        path('<int:year>/<str:month>/', views.index, name='index')
+    ]
+-   Modify again **events views.py**:   
+    from django.shortcuts import render
+    from django.http import HttpResponse
+    from datetime import date
+    
+    
+    def index(request, year, month):
+        # t = date.today()
+        # month = date.strftime(t, '%b')
+        # year = t.year
+        title = "MyClub Event Calendar - %s %s" % (month,year)
+        return HttpResponse("<h1>%s</h1>" % title)
+-   See result at ```http://127.0.0.1:8000/2020/july``` (for example)
+-   Notice that invalid values are working like ```http://127.0.0.1:8000/3070/octocat```
+-   Modify again **events urls.py**: 
+    from django.urls import path, re_path
+    from . import views
+    
+    
+    urlpatterns = [
+        # path('', views.index, name='index')
+        # path('<int:year>/<str:month>/', views.index, name='index')
+        re_path(r'^^?P<year>[0-9]{4})/(?P<month>0?[1-9]|1[0-2])/', views.index, name='index'),
+    ]
+-   Modify again **events views.py**:
+    from django.shortcuts import render
+    from django.http import HttpResponse
+    from datetime import date
+    import calendar
+    
+    
+    def index(request, year, month):
+        # t = date.today()
+        # month = date.strftime(t, '%b')
+        # year = t.year
+        year = int(year)
+        month = int(month)
+        if year < 2000 or year > 2099: year = date.today().year
+        month_name = calendar.month_name[month]
+        title = "MyClub Event Calendar - %s %s" % (month_name, year)
+        return HttpResponse("<h1>%s</h1>" % title)
+-   See result at ```http://127.0.0.1:8000/2020/07``` (good) or ```http://127.0.0.1:8000/3458/05``` (redirection through condition) or ```http://127.0.0.1:8000/3545/54``` (bad)
+-   Modify again **events views.py**:
+    from django.shortcuts import render
+    from django.http import HttpResponse
+    from datetime import date
+    from calendar import HTMLCalendar
+    import calendar
+    
+    
+    def index(request, year, month):
+        # t = date.today()
+        # month = date.strftime(t, '%b')
+        # year = t.year
+        year = int(year)
+        month = int(month)
+        if year < 2000 or year > 2099: year = date.today().year
+        month_name = calendar.month_name[month]
+        title = "MyClub Event Calendar - %s %s" % (month_name, year)
+        cal = HTMLCalendar().formatmonth(year, month)
+        return HttpResponse("<h1>%s</h1><p>%s</p>" % (title, cal))
+-   See result at ```http://127.0.0.1:8000/2020/07``` (for example)
+-   In **events urls.py**, uncomment the following:
+    ```path('', views.index, name='index'),``` to enable root page again, but now it needs two arguments to work...
+-   let's solve this adding default value in **def index** in **events views.py**:
+    ```def index(request, year=date.today().year, month=date.today().month):```
 
 
 ---
