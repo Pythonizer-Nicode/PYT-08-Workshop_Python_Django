@@ -14,6 +14,7 @@
 -   [STEP 3 - Models](#step_3_-_models)
 -   [STEP 4 - Views](#step_4_-_views)
 -   [STEP 5 - Templates](#step_5_-_templates)
+-   [STEP 6 - Event List](#step_6_-_event_list)
 
 ---
 
@@ -244,6 +245,30 @@
 -   Now in **events/templates/events** create a file called **calendar_base.html** (see content in repository files)
 -   In **events views.py** modify the return:
     ```return render(request, 'events/calendar_base.html', {'title': title, 'cal': cal})```
+
+---
+
+### STEP 6 - Event List
+
+-   Open **events admin.py** and add:
+    from django.contrib import admin
+    from .models import Venue, MyClubUser, Event
+    
+    admin.site.register(Venue),
+    admin.site.register(MyClubUser),
+    admin.site.register(Event), 
+-   In **events views.py** add a view at the bottom:    
+
+    def all_events(request):
+        event_list = Event.objects.all()
+        return render(request, 'events/event_list.html', {'event_list': event_list})
+-   Also add ```from .models import Event``` at the top of same file
+-   Create **event_list.html** in **events/templates/events** (see example in repository files)
+-   In **events urls.py** add this path:
+    ```path('events/', views.all_events, name='show-events'),```
+    
+
+    
 
 ---
 
