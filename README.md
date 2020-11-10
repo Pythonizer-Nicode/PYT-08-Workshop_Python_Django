@@ -13,6 +13,7 @@
 -   [STEP 2 - Creating App](#step_2_-_creating_app)
 -   [STEP 3 - Models](#step_3_-_models)
 -   [STEP 4 - Views](#step_4_-_views)
+-   [STEP 5 - Templates](#step_5_-_templates)
 
 ---
 
@@ -223,6 +224,26 @@
 -   let's solve this adding default value in **def index** in **events views.py**:
     ```def index(request, year=date.today().year, month=date.today().month):```
 
+---
+
+### STEP 5 - Templates
+
+-   In your **events** folder create directories: ```templates/events/```
+-   In your **workshop**(not root, so workshop/workshop) folder create directory: ```templates```
+-   Open **settings.py** add:    
+    ```import os```
+-   In TEMPLATES section modify **'DIRS'**:
+    ```'DIRS': [os.path.join(BASE_DIR, 'workshop/templates')],```
+-   Create a new HTML file: **/workshop/templates/base.html** and add HTML content (see example in repository files)
+-   In **events views.py** replace return line:
+    ```return render(request, 'base.html', {'title': title, 'cal': cal})```
+-   Remove HTML autoescape in **base.html** by modifying the **<p>** line:
+    ```<p>{% autoescape off %}{{ cal }}{% endautoescape %}</p>```
+-   See result at ```http://127.0.0.1:8000/```
+-   Use inheritance, modify **base.html** (see example in repository files)
+-   Now in **events/templates/events** create a file called **calendar_base.html** (see content in repository files)
+-   In **events views.py** modify the return:
+    ```return render(request, 'events/calendar_base.html', {'title': title, 'cal': cal})```
 
 ---
 
