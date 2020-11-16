@@ -200,7 +200,7 @@
         ```title = "MyClub Event Calendar - %s %s" % (month_name, year)```
         ```return HttpResponse("<h1>%s</h1>" % title)```   
 -   See result at ```http://127.0.0.1:8000/2020/07``` (good) or ```http://127.0.0.1:8000/3458/05``` (redirection through condition) or ```http://127.0.0.1:8000/3545/54``` (bad)
--   Modify again **events views.py**:
+-   Modify again **events views.py**:     
     ```from django.shortcuts import render```  
     ```from django.http import HttpResponse```  
     ```from datetime import date```  
