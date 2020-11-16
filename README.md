@@ -53,11 +53,11 @@
 -   In your **events** app folder open **models.py**
 -   Add :   
     class Event(models.Model):  
-        name = models.CharField('Event Name', max_length=120)   
-        event_date = models.DateTimeField('Event Date') 
-        venue = models.CharField(max_length=120)    
-        manager = models.CharField(max_length=60)   
-        description = models.TextField(blank=True)  
+        name = models.CharField('Event Name', max_length=120)       
+        event_date = models.DateTimeField('Event Date')       
+        venue = models.CharField(max_length=120)      
+        manager = models.CharField(max_length=60)     
+        description = models.TextField(blank=True)    
 -   ```python manage.py makemigrations```
 -   ```python manage.py migrate```
 -   ```python manage.py sqlmigrate events 0001_initial``` to view automatic SQL request
@@ -70,20 +70,20 @@
     
     
     class Venue(models.Model):
-        name = models.CharField('Venue Name', max_length=120)
-        address = models.CharField(max_length=300)
-        zip_code = models.CharField('Post Code', max_length=12)
-        phone = models.CharField('Contact Phone', max_length=20)
-        web = models.URLField('Web Address')
-        email_address = models.EmailField('Email Address')
+        name = models.CharField('Venue Name', max_length=120)     
+        address = models.CharField(max_length=300)    
+        zip_code = models.CharField('Post Code', max_length=12)   
+        phone = models.CharField('Contact Phone', max_length=20)      
+        web = models.URLField('Web Address')      
+        email_address = models.EmailField('Email Address')    
 
         def __str__(self):
             return.self.name
 
 
     class MyClubUser(models.Model):
-        first_name = models.CharField(max_length=30)
-        last_name = models.CharField(max_length=30)
+        first_name = models.CharField(max_length=30)         
+        last_name = models.CharField(max_length=30). 
         email = models.EmailField('User Email')
 
         def __str__(self):
